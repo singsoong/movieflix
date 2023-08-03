@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { IGetMoviesResult, getMovies } from "../../api/getMovies";
 import { makeImagePath } from "../../utils/makeImagePath";
+import Slider from "../../components/common/Slider";
 
 function HomePage() {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
@@ -17,6 +18,7 @@ function HomePage() {
         <Banner $bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
           <Title>{data?.results[0].title}</Title>
           <Overview>{data?.results[0].overview}</Overview>
+          <Slider data={data} />
         </Banner>
       )}
     </Container>
@@ -25,6 +27,7 @@ function HomePage() {
 
 const Container = styled.div`
   height: 200vh;
+  overflow-x: hidden;
 `;
 
 const Loader = styled.div`
@@ -54,6 +57,7 @@ const Overview = styled.p`
   font-size: 30px;
   color: white;
   width: 50%;
+  margin-bottom: 100px;
 `;
 
 export default HomePage;
