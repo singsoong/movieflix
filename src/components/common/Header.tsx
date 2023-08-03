@@ -70,10 +70,12 @@ function Header() {
             onClick={toggleSearch}
             animate={{ x: isSearchOpen ? -170 : 0 }}
           />
-          <Input
-            transition={{ type: "linear" }}
-            animate={{ scaleX: isSearchOpen ? 1 : 0 }}
-          />
+          {isSearchOpen && (
+            <Input
+              transition={{ type: "linear" }}
+              animate={{ scaleX: isSearchOpen ? 1 : 0 }}
+            />
+          )}
         </SearchWrapper>
       </Col>
     </Nav>
