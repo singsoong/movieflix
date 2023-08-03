@@ -3,20 +3,9 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import { IGetMoviesResult } from "../../api/getMovies";
 import { makeImagePath } from "../../utils/makeImagePath";
+import useWindowDimensions from "../hooks/useWindowDimension";
 
 const MAX_MOIVES = 6;
-
-const rowVariants = {
-  hidden: {
-    x: window.outerWidth,
-  },
-  visible: {
-    x: 0,
-  },
-  exit: {
-    x: -window.outerWidth,
-  },
-};
 
 interface ISliderProps {
   data: IGetMoviesResult | undefined;
@@ -31,16 +20,17 @@ function Slider({ data }: ISliderProps) {
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
+  const width = useWindowDimensions();
+
   return (
     <Container onClick={increaseIndex}>
       <AnimatePresence initial={false}>
         <Row
-          variants={rowVariants}
           key={index}
-          initial="hidden"
-          animate="visible"
-          transition={{ type: "tween", duration: 0.5 }}
-          exit="exit"
+          transition={{ type: "tween", duration: 0.7 }}
+          initial={{ x: width + 10 }}
+          animate={{ x: 0 }}
+          exit={{ x: -width - 10 }}
         >
           {data?.results
             .slice(1)
