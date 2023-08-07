@@ -11,6 +11,27 @@ interface ISliderProps {
   data: IGetMoviesResult | undefined;
 }
 
+const infoVar = {
+  hover: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      type: "tween",
+    },
+  },
+};
+
+const boxVar = {
+  hover: {
+    scale: 1.3,
+    y: -50,
+    transition: {
+      delay: 0.3,
+      type: "tween",
+    },
+  },
+};
+
 function Slider({ data }: ISliderProps) {
   const [index, setIndex] = useState(0);
   const increaseIndex = () => {
@@ -37,9 +58,16 @@ function Slider({ data }: ISliderProps) {
             .slice(MAX_MOIVES * index, MAX_MOIVES * index + MAX_MOIVES)
             .map((movie) => (
               <Box
+                variants={boxVar}
+                whileHover="hover"
+                transition={{ type: "tween" }}
                 key={movie.id}
                 $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-              />
+              >
+                <Info variants={infoVar}>
+                  <h4>{movie.title}</h4>
+                </Info>
+              </Box>
             ))}
         </Row>
       </AnimatePresence>
@@ -66,8 +94,28 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
   background-size: cover;
   background-position: center;
   height: 200px;
-  color: red;
   font-size: 64px;
+  cursor: pointer;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform: center right;
+  }
+`;
+
+const Info = styled(motion.div)`
+  padding: 10px;
+  background-color: #868484;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  h4 {
+    text-align: center;
+    font-size: 12px;
+    color: white;
+  }
 `;
 
 export default Slider;
