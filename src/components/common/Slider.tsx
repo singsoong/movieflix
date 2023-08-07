@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 import { IGetMoviesResult } from "../../api/getMovies";
 import { makeImagePath } from "../../utils/makeImagePath";
 import useWindowDimensions from "../hooks/useWindowDimension";
+import { useNavigate } from "react-router-dom";
 
 const MAX_MOIVES = 6;
 
@@ -34,6 +35,7 @@ const boxVar = {
 
 function Slider({ data }: ISliderProps) {
   const [index, setIndex] = useState(0);
+  const navigate = useNavigate();
   const increaseIndex = () => {
     if (data) {
       const totalMovies = data?.results.length - 1;
@@ -42,6 +44,10 @@ function Slider({ data }: ISliderProps) {
     }
   };
   const width = useWindowDimensions();
+
+  const onBoxClicked = (movieId: number) => {
+    navigate(`/movies/${movieId}`);
+  };
 
   return (
     <Container onClick={increaseIndex}>
@@ -58,6 +64,8 @@ function Slider({ data }: ISliderProps) {
             .slice(MAX_MOIVES * index, MAX_MOIVES * index + MAX_MOIVES)
             .map((movie) => (
               <Box
+                layoutId={String(movie.id)}
+                onClick={() => onBoxClicked(movie.id)}
                 variants={boxVar}
                 whileHover="hover"
                 transition={{ type: "tween" }}

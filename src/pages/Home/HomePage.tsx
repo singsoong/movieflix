@@ -3,12 +3,21 @@ import { useQuery } from "@tanstack/react-query";
 import { IGetMoviesResult, getMovies } from "../../api/getMovies";
 import { makeImagePath } from "../../utils/makeImagePath";
 import Slider from "../../components/common/Slider";
+import { PathMatch, useMatch } from "react-router-dom";
+import MovieModal from "../../components/common/MovieModal";
+import { AnimatePresence } from "framer-motion";
 
 function HomePage() {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
     ["movies", "nowPlaying"],
     getMovies
   );
+  const moviePathMatch: PathMatch<string> | null = useMatch("/movies/:movieId");
+  const clickedMovie =
+    moviePathMatch?.params.movieId &&
+    data?.results.find(
+      (movie) => String(movie.id) === moviePathMatch.params.movieId
+    );
 
   return (
     <Container>
@@ -21,6 +30,14 @@ function HomePage() {
           <Slider data={data} />
         </Banner>
       )}
+      <AnimatePresence>
+        {moviePathMatch && (
+          <MovieModal
+            movieId={String(moviePathMatch.params.movieId)}
+            movieData={Object(clickedMovie)}
+          />
+        )}
+      </AnimatePresence>
     </Container>
   );
 }
