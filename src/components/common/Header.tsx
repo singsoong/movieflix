@@ -92,6 +92,7 @@ const Nav = styled(motion.nav)`
   height: 80px;
   padding: 0 50px;
   background-color: black;
+  z-index: 99999;
 `;
 
 const AnimateLogo = motion(LogoSVG);
