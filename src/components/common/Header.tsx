@@ -7,8 +7,9 @@ import {
   useMotionValueEvent,
   useAnimation,
 } from "framer-motion";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const logoVariants = {
   normal: {
@@ -32,6 +33,10 @@ const navVariants = {
   },
 };
 
+interface IForm {
+  keyword: string;
+}
+
 function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const isHomePage = useMatch("/");
@@ -39,6 +44,8 @@ function Header() {
   const toggleSearch = () => setIsSearchOpen((prev) => !prev);
   const { scrollY } = useScroll();
   const navAnimation = useAnimation();
+  const { register, handleSubmit } = useForm<IForm>();
+  const navigate = useNavigate();
 
   useMotionValueEvent(scrollY, "change", () => {
     if (scrollY.get() > 80) {
@@ -47,6 +54,10 @@ function Header() {
       navAnimation.start("top");
     }
   });
+
+  const onValid = (data: IForm) => {
+    navigate(`/search?keyword=${data.keyword}`);
+  };
 
   return (
     <Nav variants={navVariants} animate={navAnimation} initial="top">
@@ -64,7 +75,7 @@ function Header() {
         </Items>
       </Col>
       <Col>
-        <SearchWrapper>
+        <SearchForm onSubmit={handleSubmit(onValid)}>
           <SearchIcon
             transition={{ type: "linear" }}
             onClick={toggleSearch}
@@ -72,11 +83,12 @@ function Header() {
           />
           {isSearchOpen && (
             <Input
+              {...register("keyword", { required: true, minLength: 2 })}
               transition={{ type: "linear" }}
               animate={{ scaleX: isSearchOpen ? 1 : 0 }}
             />
           )}
-        </SearchWrapper>
+        </SearchForm>
       </Col>
     </Nav>
   );
@@ -156,7 +168,7 @@ const Input = styled(motion.input)`
   border-radius: 5px;
 `;
 
-const SearchWrapper = styled.div`
+const SearchForm = styled.form`
   display: flex;
   align-items: center;
   position: relative;
