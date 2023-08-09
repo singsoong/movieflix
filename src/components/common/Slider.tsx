@@ -35,14 +35,26 @@ const boxVar = {
 
 function Slider({ data }: ISliderProps) {
   const [index, setIndex] = useState(0);
+  const [back, setBack] = useState(false);
   const navigate = useNavigate();
-  const increaseIndex = () => {
+  const increaseIndex = async () => {
     if (data) {
+      await setBack(false);
       const totalMovies = data?.results.length - 1;
       const maxIndex = Math.floor(totalMovies / MAX_MOIVES) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
+
+  const decreaseIndex = async () => {
+    if (data) {
+      await setBack(true);
+      const totalMovies = data?.results.length - 1;
+      const maxIndex = Math.floor(totalMovies / MAX_MOIVES) - 1;
+      setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+    }
+  };
+
   const width = useWindowDimensions();
 
   const onBoxClicked = (movieId: number) => {
@@ -50,14 +62,14 @@ function Slider({ data }: ISliderProps) {
   };
 
   return (
-    <Container onClick={increaseIndex}>
-      <AnimatePresence initial={false}>
+    <Container>
+      <AnimatePresence initial={false} custom={back}>
         <Row
           key={index}
           transition={{ type: "tween", duration: 0.7 }}
-          initial={{ x: width + 10 }}
+          initial={{ x: back ? -width - 10 : width + 10 }}
           animate={{ x: 0 }}
-          exit={{ x: -width - 10 }}
+          exit={{ x: back ? width + 10 : -width - 10 }}
         >
           {data?.results
             .slice(1)
@@ -79,6 +91,8 @@ function Slider({ data }: ISliderProps) {
             ))}
         </Row>
       </AnimatePresence>
+      <PrevBtn onClick={decreaseIndex}>＜</PrevBtn>
+      <NextBtn onClick={increaseIndex}>＞</NextBtn>
     </Container>
   );
 }
@@ -108,7 +122,7 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
     transform-origin: center left;
   }
   &:last-child {
-    transform: center right;
+    transform-origin: center right;
   }
 `;
 
@@ -124,6 +138,34 @@ const Info = styled(motion.div)`
     font-size: 12px;
     color: white;
   }
+`;
+
+const Btn = styled.button`
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  color: white;
+  font-size: 30px;
+  line-height: 30px;
+  cursor: pointer;
+
+  &:hover {
+    color: black;
+    background-color: #ffffffc0;
+  }
+`;
+
+const NextBtn = styled(Btn)`
+  right: 10px;
+  top: 70px;
+`;
+
+const PrevBtn = styled(Btn)`
+  left: 10px;
+  top: 70px;
 `;
 
 export default Slider;
