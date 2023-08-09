@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { makeImagePath } from "./../../utils/makeImagePath";
+import { useQuery } from "@tanstack/react-query";
+import { IGetMovieDetailData, getMovieDetail } from "../../api/getMovieDetail";
 
 interface IMovie {
   title: string;
@@ -17,7 +19,10 @@ interface IMovieModalProps {
 function MovieModal({ movieId, movieData }: IMovieModalProps) {
   const navigate = useNavigate();
   const onOverlayClick = () => navigate("/");
-
+  const { data: movieDetailData } = useQuery<IGetMovieDetailData>(
+    ["moives", movieId],
+    () => getMovieDetail(movieId)
+  );
   return (
     <>
       <Overlay
@@ -33,11 +38,35 @@ function MovieModal({ movieId, movieData }: IMovieModalProps) {
               "w500"
             )})`,
           }}
+        >
+          <TitleContainer>
+            <MovieTitle>{movieData.title}</MovieTitle>
+            <MovieSubTitle>{movieDetailData?.original_title}</MovieSubTitle>
+          </TitleContainer>
+        </MovieImg>
+        <CloseBtn onClick={onOverlayClick}>✕</CloseBtn>
+
+        <PosterImg
+          style={{
+            backgroundImage: `url(${makeImagePath(
+              String(movieDetailData?.poster_path)
+            )})`,
+          }}
         />
-        <ContentContainer>
-          <MovieTitle>{movieData.title}</MovieTitle>
+        <OverviewContainer>
+          <MovieOverview>
+            {movieDetailData?.release_date.slice(0, 4)}
+            <Slice>·</Slice>
+            {movieDetailData?.runtime}분<Slice>·</Slice>
+            {movieDetailData?.genres[0].name}
+            <Slice>·</Slice>
+            {movieDetailData?.vote_average}점
+          </MovieOverview>
+          {movieDetailData?.tagline && (
+            <MovieOverview>● {movieDetailData?.tagline}</MovieOverview>
+          )}
           <MovieOverview>{movieData.overview}</MovieOverview>
-        </ContentContainer>
+        </OverviewContainer>
       </Container>
     </>
   );
@@ -48,8 +77,8 @@ const Container = styled(motion.div)`
   top: 100px;
   left: 0;
   right: 0;
-  width: 700px;
-  height: 80vh;
+  width: 1000px;
+  height: 750px;
   margin: 0 auto;
   border-radius: 20px;
   overflow: hidden;
@@ -70,24 +99,66 @@ const MovieImg = styled.div`
   height: 400px;
   background-size: cover;
   background-position: center center;
+  position: relative;
+`;
+
+const PosterImg = styled.div`
+  width: 300px;
+  height: 400px;
+  background-size: cover;
+  background-position: center center;
+  position: absolute;
+  top: 300px;
+  left: 20px;
+`;
+
+const TitleContainer = styled.div`
+  position: absolute;
+  left: calc(30% + 50px);
+  bottom: 10px;
 `;
 
 const MovieTitle = styled.h3`
   font-size: 30px;
   color: white;
-  position: relative;
-  top: -70px;
   font-weight: bold;
 `;
 
+const MovieSubTitle = styled(MovieTitle)`
+  font-size: 20px;
+`;
+
+const OverviewContainer = styled.div`
+  width: 65%;
+  position: absolute;
+  left: calc(30% + 50px);
+  padding-top: 40px;
+  line-height: 23px;
+`;
 const MovieOverview = styled.p`
   color: white;
   position: relative;
-  top: -50px;
+  top: -20px;
+  margin-bottom: 20px;
 `;
 
-const ContentContainer = styled.div`
-  padding-left: 20px;
+const CloseBtn = styled.div`
+  color: white;
+  font-size: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  &:hover {
+    color: black;
+  }
+`;
+
+const Slice = styled.span`
+  margin-left: 10px;
+  margin-right: 10px;
+  font-weight: bold;
 `;
 
 export default MovieModal;
