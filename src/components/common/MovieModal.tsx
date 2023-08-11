@@ -14,15 +14,17 @@ interface IMovie {
 interface IMovieModalProps {
   movieId: string;
   movieData: IMovie;
+  url: string;
 }
 
-function MovieModal({ movieId, movieData }: IMovieModalProps) {
+function MovieModal({ movieId, movieData, url }: IMovieModalProps) {
   const navigate = useNavigate();
   const onOverlayClick = () => navigate("/");
   const { data: movieDetailData } = useQuery<IGetMovieDetailData>(
     ["moives", movieId],
     () => getMovieDetail(movieId)
   );
+
   return (
     <>
       <Overlay
@@ -30,7 +32,7 @@ function MovieModal({ movieId, movieData }: IMovieModalProps) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       />
-      <Container layoutId={movieId}>
+      <Container layoutId={`${url}/${movieId}`}>
         <MovieImg
           style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)), url(${makeImagePath(
@@ -88,7 +90,7 @@ const Container = styled(motion.div)`
 const Overlay = styled(motion.div)`
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 160%;
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
   opacity: 0;

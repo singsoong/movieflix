@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import { IGetMoviesResult } from "../../api/getMovies";
+import { IGetMoviesResult } from "../../api/getNowplayingMovies";
 import { makeImagePath } from "../../utils/makeImagePath";
 import useWindowDimensions from "../hooks/useWindowDimension";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ const MAX_MOIVES = 6;
 
 interface ISliderProps {
   data: IGetMoviesResult | undefined;
+  url: string;
 }
 
 const infoVar = {
@@ -33,7 +34,7 @@ const boxVar = {
   },
 };
 
-function Slider({ data }: ISliderProps) {
+function Slider({ data, url }: ISliderProps) {
   const [index, setIndex] = useState(0);
   const [back, setBack] = useState(false);
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function Slider({ data }: ISliderProps) {
   const width = useWindowDimensions();
 
   const onBoxClicked = (movieId: number) => {
-    navigate(`/movies/${movieId}`);
+    navigate(`/movies/${url}/${movieId}`);
   };
 
   return (
@@ -76,7 +77,7 @@ function Slider({ data }: ISliderProps) {
             .slice(MAX_MOIVES * index, MAX_MOIVES * index + MAX_MOIVES)
             .map((movie) => (
               <Box
-                layoutId={String(movie.id)}
+                layoutId={String(`${url}/${movie.id}`)}
                 onClick={() => onBoxClicked(movie.id)}
                 variants={boxVar}
                 whileHover="hover"
@@ -99,15 +100,15 @@ function Slider({ data }: ISliderProps) {
 
 const Container = styled.div`
   position: relative;
+  padding-bottom: 250px;
 `;
 
 const Row = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 5px;
-  margin-bottom: 10px;
-  position: absolute;
   width: 100%;
+  position: absolute;
 `;
 
 const Box = styled(motion.div)<{ $bgPhoto: string }>`

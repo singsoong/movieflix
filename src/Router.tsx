@@ -13,7 +13,7 @@ function Router() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/tv" element={<TvPage />} />
         <Route path="/" element={<HomePage />}>
-          <Route path="movies/:movieId" element={<HomePage />} />
+          <Route path="movies/:type/:movieId" element={<HomePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

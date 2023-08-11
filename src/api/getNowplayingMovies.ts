@@ -20,7 +20,7 @@ export interface IGetMoviesResult {
   total_results: number;
 }
 
-export async function getMovies() {
+export async function getNowplayingMovies() {
   const response = await axios.get(
     `${BASE_URL}/movie/now_playing?language=ko&page=1&region=kr&api_key=${API_KEY}`
   );
