@@ -5,12 +5,14 @@ import { IGetMoviesResult } from "../../api/getNowplayingMovies";
 import { makeImagePath } from "../../utils/makeImagePath";
 import useWindowDimensions from "../hooks/useWindowDimension";
 import { useNavigate } from "react-router-dom";
+import { IGetTvResult } from "../../api/getAiringTodayTv";
 
 const MAX_MOIVES = 6;
 
 interface ISliderProps {
-  data: IGetMoviesResult | undefined;
+  data: IGetMoviesResult | IGetTvResult | undefined;
   url: string;
+  type: "movie" | "tv";
 }
 
 const infoVar = {
@@ -34,7 +36,7 @@ const boxVar = {
   },
 };
 
-function Slider({ data, url }: ISliderProps) {
+function Slider({ data, url, type }: ISliderProps) {
   const [index, setIndex] = useState(0);
   const [back, setBack] = useState(false);
   const navigate = useNavigate();
@@ -59,7 +61,11 @@ function Slider({ data, url }: ISliderProps) {
   const width = useWindowDimensions();
 
   const onBoxClicked = (movieId: number) => {
-    navigate(`/movies/${url}/${movieId}`);
+    if (type === "movie") {
+      navigate(`/movies/${url}/${movieId}`);
+    } else {
+      navigate(`/tv/${url}/${movieId}`);
+    }
   };
 
   return (
@@ -86,7 +92,7 @@ function Slider({ data, url }: ISliderProps) {
                 $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
               >
                 <Info variants={infoVar}>
-                  <h4>{movie.title}</h4>
+                  <h4>{type === "movie" ? movie.title : movie.name}</h4>
                 </Info>
               </Box>
             ))}

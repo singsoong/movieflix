@@ -71,13 +71,13 @@ function HomePage() {
           </Banner>
           <SliderContainer>
             <SliderTitle>상영중인 영화</SliderTitle>
-            <Slider url="nowPlaying" data={data} />
+            <Slider type="movie" url="nowPlaying" data={data} />
             <SliderTitle>인기있는 영화</SliderTitle>
-            <Slider url="popular" data={popularMoviesData} />
+            <Slider type="movie" url="popular" data={popularMoviesData} />
             <SliderTitle>별점이 높은 영화</SliderTitle>
-            <Slider url="topRated" data={topRatedMoviesData} />
+            <Slider type="movie" url="topRated" data={topRatedMoviesData} />
             <SliderTitle>개봉 예정 영화</SliderTitle>
-            <Slider url="upcoming" data={upcomingMoviesData} />
+            <Slider type="movie" url="upcoming" data={upcomingMoviesData} />
           </SliderContainer>
         </>
       )}

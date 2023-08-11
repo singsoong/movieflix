@@ -11,7 +11,9 @@ function Router() {
       <Header />
       <Routes>
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/tv" element={<TvPage />} />
+        <Route path="/tv" element={<TvPage />}>
+          <Route path=":type/:movieId" element={<TvPage />} />
+        </Route>
         <Route path="/" element={<HomePage />}>
           <Route path="movies/:type/:movieId" element={<HomePage />} />
         </Route>

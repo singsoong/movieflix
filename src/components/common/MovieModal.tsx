@@ -6,7 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { IGetMovieDetailData, getMovieDetail } from "../../api/getMovieDetail";
 
 interface IMovie {
-  title: string;
+  title?: string;
+  name?: string;
   backdrop_path: string;
   overview: string;
 }
@@ -19,7 +20,9 @@ interface IMovieModalProps {
 
 function MovieModal({ movieId, movieData, url }: IMovieModalProps) {
   const navigate = useNavigate();
-  const onOverlayClick = () => navigate("/");
+  const onOverlayClick = () => {
+    navigate(-1);
+  };
   const { data: movieDetailData } = useQuery<IGetMovieDetailData>(
     ["moives", movieId],
     () => getMovieDetail(movieId)
@@ -42,7 +45,9 @@ function MovieModal({ movieId, movieData, url }: IMovieModalProps) {
           }}
         >
           <TitleContainer>
-            <MovieTitle>{movieData.title}</MovieTitle>
+            <MovieTitle>
+              {movieData.title ? movieData.title : movieData.name}
+            </MovieTitle>
             <MovieSubTitle>{movieDetailData?.original_title}</MovieSubTitle>
           </TitleContainer>
         </MovieImg>
@@ -60,7 +65,7 @@ function MovieModal({ movieId, movieData, url }: IMovieModalProps) {
             {movieDetailData?.release_date.slice(0, 4)}
             <Slice>·</Slice>
             {movieDetailData?.runtime}분<Slice>·</Slice>
-            {movieDetailData?.genres[0].name}
+            {movieDetailData?.genres[0]?.name}
             <Slice>·</Slice>
             {movieDetailData?.vote_average}점
           </MovieOverview>

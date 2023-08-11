@@ -40,7 +40,7 @@ interface IForm {
 function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const isHomePage = useMatch("/");
-  const isTvPage = useMatch("tv");
+  const isTvPage = useMatch("/tv/*");
   const toggleSearch = () => setIsSearchOpen((prev) => !prev);
   const { scrollY } = useScroll();
   const navAnimation = useAnimation();

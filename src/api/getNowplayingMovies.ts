@@ -5,8 +5,9 @@ interface IMovie {
   id: number;
   backdrop_path: string;
   poster_path: string;
-  title: string;
+  title?: string;
   overview: string;
+  name?: string;
 }
 
 export interface IGetMoviesResult {
