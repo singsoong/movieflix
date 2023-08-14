@@ -63,14 +63,14 @@ function TvPage() {
             <SubTitle>{airingData?.results[0].original_name}</SubTitle>
           </Banner>
           <SliderContainer>
+            <SliderTitle>별점이 높은 티비 쇼</SliderTitle>
+            <Slider type="tv" url="topRated" data={topRatedData} />
             <SliderTitle>오늘 방영중인 쇼</SliderTitle>
             <Slider type="tv" url="airingToday" data={airingData} />
             <SliderTitle>앞으로 7일 동안 방영중인 쇼</SliderTitle>
             <Slider type="tv" url="onTheAir" data={onTheAirData} />
             <SliderTitle>인기있는 티비 쇼</SliderTitle>
             <Slider type="tv" url="popular" data={popularData} />
-            <SliderTitle>별점이 높은 티비 쇼</SliderTitle>
-            <Slider type="tv" url="topRated" data={topRatedData} />
           </SliderContainer>
         </>
       )}
