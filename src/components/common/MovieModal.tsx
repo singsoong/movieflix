@@ -16,16 +16,18 @@ interface IMovieModalProps {
   movieId: string;
   movieData: IMovie;
   url: string;
+  type: string;
 }
 
-function MovieModal({ movieId, movieData, url }: IMovieModalProps) {
+function MovieModal({ movieId, movieData, url, type }: IMovieModalProps) {
   const navigate = useNavigate();
   const onOverlayClick = () => {
     navigate(-1);
   };
+
   const { data: movieDetailData } = useQuery<IGetMovieDetailData>(
     ["moives", movieId],
-    () => getMovieDetail(movieId)
+    () => getMovieDetail(movieId, type)
   );
 
   return (
@@ -38,15 +40,21 @@ function MovieModal({ movieId, movieData, url }: IMovieModalProps) {
       <Container layoutId={`${url}/${movieId}`}>
         <MovieImg
           style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)), url(${makeImagePath(
-              movieData.backdrop_path,
-              "w500"
-            )})`,
+            backgroundImage:
+              type === "movie"
+                ? `linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)), url(${makeImagePath(
+                    movieData.backdrop_path,
+                    "w500"
+                  )})`
+                : `linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)), url(${makeImagePath(
+                    String(movieDetailData?.poster_path),
+                    "w500"
+                  )})`,
           }}
         >
           <TitleContainer>
             <MovieTitle>
-              {movieData.title ? movieData.title : movieData.name}
+              {type === "movie" ? movieData.title : movieData.name}
             </MovieTitle>
             <MovieSubTitle>{movieDetailData?.original_title}</MovieSubTitle>
           </TitleContainer>
@@ -62,9 +70,13 @@ function MovieModal({ movieId, movieData, url }: IMovieModalProps) {
         />
         <OverviewContainer>
           <MovieOverview>
-            {movieDetailData?.release_date.slice(0, 4)}
-            <Slice>·</Slice>
-            {movieDetailData?.runtime}분<Slice>·</Slice>
+            {type === "tv" ? null : (
+              <>
+                {movieDetailData?.release_date.slice(0, 4)}
+                <Slice>·</Slice>
+                {movieDetailData?.runtime}분<Slice>·</Slice>
+              </>
+            )}
             {movieDetailData?.genres[0]?.name}
             <Slice>·</Slice>
             {movieDetailData?.vote_average}점

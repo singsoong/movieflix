@@ -100,7 +100,11 @@ function Slider({ data, url, type }: ISliderProps) {
                 whileHover="hover"
                 transition={{ type: "tween" }}
                 key={movie.id}
-                $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                $bgPhoto={
+                  type === "tv"
+                    ? makeImagePath(movie.poster_path, "w500")
+                    : makeImagePath(movie.backdrop_path, "w500")
+                }
               >
                 <Info variants={infoVar}>
                   <h4>{type === "movie" ? movie.title : movie.name}</h4>

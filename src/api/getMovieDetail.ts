@@ -16,9 +16,16 @@ export interface IGetMovieDetailData {
   vote_average: number;
 }
 
-export async function getMovieDetail(movieId: string) {
-  const response = await axios.get(
-    `${BASE_URL}/movie/${movieId}?language=ko&api_key=${API_KEY}`
-  );
-  return response.data;
+export async function getMovieDetail(movieId: string, type: string) {
+  if (type === "tv") {
+    const response = await axios.get(
+      `${BASE_URL}/tv/${movieId}?language=ko&api_key=${API_KEY}`
+    );
+    return response.data;
+  } else {
+    const response = await axios.get(
+      `${BASE_URL}/movie/${movieId}?language=ko&api_key=${API_KEY}`
+    );
+    return response.data;
+  }
 }

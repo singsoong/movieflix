@@ -85,6 +85,7 @@ function HomePage() {
       <AnimatePresence>
         {moviePathMatch && (
           <MovieModal
+            type="movie"
             movieId={String(moviePathMatch.params.movieId)}
             movieData={Object(movieData)}
             url={String(moviePathMatch.params.type)}
