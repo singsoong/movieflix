@@ -117,11 +117,11 @@ function SearchPage() {
 
 const Container = styled.div`
   background-color: black;
-  width: 100vw;
   height: 100vh;
   padding-top: 100px;
   padding-left: 30px;
   padding-right: 30px;
+  overflow: hidden;
 `;
 
 const GridContainer = styled.div`
@@ -143,6 +143,10 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
   }
   &:last-child {
     transform-origin: center right;
+  }
+  position: relative;
+  &:hover {
+    z-index: 999999;
   }
 `;
 

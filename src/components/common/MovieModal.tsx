@@ -29,10 +29,10 @@ function MovieModal({ movieId, movieData, url, type }: IMovieModalProps) {
     ["moives", movieId],
     () => getMovieDetail(movieId, type)
   );
-
   return (
     <>
       <Overlay
+        $isSearch={url === "search"}
         onClick={onOverlayClick}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -104,13 +104,15 @@ const Container = styled(motion.div)`
   background-color: #302f2f;
 `;
 
-const Overlay = styled(motion.div)`
+const Overlay = styled(motion.div)<{ $isSearch: boolean }>`
   position: absolute;
   width: 100%;
-  height: 160%;
+  height: ${(props) => (props.$isSearch ? "100%" : "160%")};
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
+  left: 0;
   opacity: 0;
+  left: 0;
 `;
 
 const MovieImg = styled.div`
