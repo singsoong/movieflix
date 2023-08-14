@@ -1,37 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { styled } from "styled-components";
-import { IGetTvResult, getAiringTodayTv } from "../../api/getAiringTodayTv";
+
 import { makeImagePath } from "../../utils/makeImagePath";
 import Slider from "../../components/common/Slider";
 import { PathMatch, useMatch } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import MovieModal from "../../components/common/MovieModal";
-import { getOnTheAirTv } from "../../api/getOnTheAirTv";
-import { getPopularTv } from "../../api/getPopularTv";
-import { getTopRatedTv } from "../../api/getTopRatedTv";
+
 import Seo from "../../components/common/Seo";
+import useTvsQueries from "../../components/hooks/useTvsQueries";
 
 function TvPage() {
-  const { data: airingData, isLoading } = useQuery<IGetTvResult>(
-    ["tv", "airingToday"],
-    getAiringTodayTv
-  );
-
-  const { data: onTheAirData } = useQuery<IGetTvResult>(
-    ["tv", "onTheAir"],
-    getOnTheAirTv
-  );
-
-  const { data: popularData } = useQuery<IGetTvResult>(
-    ["tv", "popular"],
-    getPopularTv
-  );
-
-  const { data: topRatedData } = useQuery<IGetTvResult>(
-    ["tv", "topRated"],
-    getTopRatedTv
-  );
+  const [
+    { isLoading, data: airingData },
+    { data: onTheAirData },
+    { data: popularData },
+    { data: topRatedData },
+  ] = useTvsQueries();
 
   const tvPathMatch: PathMatch<string> | null = useMatch("tv/:type/:movieId");
   function clickedTv() {

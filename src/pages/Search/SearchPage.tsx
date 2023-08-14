@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import {
   PathMatch,
@@ -6,26 +5,12 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { getSearchMovies } from "../../api/getSearchMovies";
 import { styled } from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
 import { makeImagePath } from "../../utils/makeImagePath";
-import { getSearchTv } from "../../api/getSearchTv";
 import MovieModal from "../../components/common/MovieModal";
 import Seo from "../../components/common/Seo";
-
-interface IItems {
-  backdrop_path: string;
-  id: number;
-  original_title?: string;
-  poster_path: string;
-  original_name?: string;
-}
-
-interface ISearchData {
-  page: number;
-  results: IItems[];
-}
+import useSearchQueries from "../../components/hooks/useSearchQueries";
 
 const infoVar = {
   hover: {
@@ -52,16 +37,11 @@ function SearchPage() {
   const [searchParams, _] = useSearchParams();
   const [selectIdx, setSelectIdx] = useState(0);
   const keyword = searchParams.get("keyword");
-  const { data: movieData } = useQuery<ISearchData>(
-    ["search", "movie", keyword],
-    () => getSearchMovies(keyword)
+  const [{ data: movieData }, { data: tvData }] = useSearchQueries(
+    String(keyword)
   );
-  const navigate = useNavigate();
 
-  const { data: tvData } = useQuery<ISearchData>(
-    ["search", "tv", keyword],
-    () => getSearchTv(keyword)
-  );
+  const navigate = useNavigate();
 
   const onBoxClicked = (id: number) => {
     if (selectIdx === 0) {

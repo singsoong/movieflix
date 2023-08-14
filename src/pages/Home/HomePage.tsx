@@ -1,39 +1,19 @@
 import { styled } from "styled-components";
-import { useQuery } from "@tanstack/react-query";
-import {
-  IGetMoviesResult,
-  getNowplayingMovies,
-} from "../../api/getNowplayingMovies";
 import { makeImagePath } from "../../utils/makeImagePath";
 import Slider from "../../components/common/Slider";
 import { PathMatch, useMatch } from "react-router-dom";
 import MovieModal from "../../components/common/MovieModal";
 import { AnimatePresence } from "framer-motion";
-import { getPopularMovies } from "../../api/getPopularMovies";
-import { getTopRatedMovies } from "../../api/getTopRatedMovies";
-import { getUpcomingMovies } from "../../api/getUpcomingMovies";
 import Seo from "../../components/common/Seo";
+import useMoviesQueries from "../../components/hooks/useMoviesQueries";
 
 function HomePage() {
-  const { data, isLoading } = useQuery<IGetMoviesResult>(
-    ["movies", "nowPlaying"],
-    getNowplayingMovies
-  );
-
-  const { data: popularMoviesData } = useQuery<IGetMoviesResult>(
-    ["movies", "popular"],
-    getPopularMovies
-  );
-
-  const { data: topRatedMoviesData } = useQuery<IGetMoviesResult>(
-    ["movies", "topRated"],
-    getTopRatedMovies
-  );
-
-  const { data: upcomingMoviesData } = useQuery<IGetMoviesResult>(
-    ["movies", "upcoming"],
-    getUpcomingMovies
-  );
+  const [
+    { isLoading, data },
+    { data: popularMoviesData },
+    { data: topRatedMoviesData },
+    { data: upcomingMoviesData },
+  ] = useMoviesQueries();
 
   const moviePathMatch: PathMatch<string> | null = useMatch(
     "/movies/:type/:movieId"
