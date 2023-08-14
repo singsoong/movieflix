@@ -38,11 +38,16 @@ const boxVar = {
 
 function Slider({ data, url, type }: ISliderProps) {
   const [index, setIndex] = useState(0);
-  const [back, setBack] = useState(false);
+  const [back, setBack] = useState(false); // 슬라이더 뒤로 갈지 앞으로 갈지
+  const [isExit, setIsExit] = useState(true); // 애니메이션이 끝났는지 여부
+  const toggleExit = () => setIsExit((prev) => !prev);
+
   const navigate = useNavigate();
   const increaseIndex = async () => {
     if (data) {
+      if (!isExit) return; // 애니메이션이 끝나야함
       await setBack(false);
+      toggleExit();
       const totalMovies = data?.results.length - 1;
       const maxIndex = Math.floor(totalMovies / MAX_MOIVES) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
@@ -51,7 +56,9 @@ function Slider({ data, url, type }: ISliderProps) {
 
   const decreaseIndex = async () => {
     if (data) {
+      if (!isExit) return; // 애니메이션이 끝나야함
       await setBack(true);
+      toggleExit();
       const totalMovies = data?.results.length - 1;
       const maxIndex = Math.floor(totalMovies / MAX_MOIVES) - 1;
       setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
@@ -70,7 +77,11 @@ function Slider({ data, url, type }: ISliderProps) {
 
   return (
     <Container>
-      <AnimatePresence initial={false} custom={back}>
+      <AnimatePresence
+        initial={false}
+        custom={back}
+        onExitComplete={toggleExit}
+      >
         <Row
           key={index}
           transition={{ type: "tween", duration: 0.7 }}
