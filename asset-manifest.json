@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/movieflix/static/css/main.900c60e7.css",
-    "main.js": "/movieflix/static/js/main.bd5f9c7a.js",
+    "main.js": "/movieflix/static/js/main.b875addd.js",
     "static/media/nanum-gothic-65-700-normal.woff2": "/movieflix/static/media/nanum-gothic-65-700-normal.9a9741529cebeeff9c29.woff2",
     "static/media/nanum-gothic-65-400-normal.woff2": "/movieflix/static/media/nanum-gothic-65-400-normal.f00aebbfdbc6c145fa79.woff2",
     "static/media/nanum-gothic-74-700-normal.woff2": "/movieflix/static/media/nanum-gothic-74-700-normal.ec64572d517fd03baae6.woff2",
@@ -726,10 +726,10 @@
     "static/media/SearchIcon.svg": "/movieflix/static/media/SearchIcon.c70dc5a025a32167973a13148afb07a3.svg",
     "index.html": "/movieflix/index.html",
     "main.900c60e7.css.map": "/movieflix/static/css/main.900c60e7.css.map",
-    "main.bd5f9c7a.js.map": "/movieflix/static/js/main.bd5f9c7a.js.map"
+    "main.b875addd.js.map": "/movieflix/static/js/main.b875addd.js.map"
   },
   "entrypoints": [
     "static/css/main.900c60e7.css",
-    "static/js/main.bd5f9c7a.js"
+    "static/js/main.b875addd.js"
   ]
 }
