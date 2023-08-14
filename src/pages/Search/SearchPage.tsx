@@ -12,6 +12,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { makeImagePath } from "../../utils/makeImagePath";
 import { getSearchTv } from "../../api/getSearchTv";
 import MovieModal from "../../components/common/MovieModal";
+import Seo from "../../components/common/Seo";
 
 interface IItems {
   backdrop_path: string;
@@ -88,6 +89,7 @@ function SearchPage() {
 
   return (
     <Container>
+      <Seo title="Search" />
       <SelectorContainer>
         <Select $isClicked={selectIdx === 0} onClick={() => setSelectIdx(0)}>
           Movies

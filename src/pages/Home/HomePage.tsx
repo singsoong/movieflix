@@ -12,6 +12,7 @@ import { AnimatePresence } from "framer-motion";
 import { getPopularMovies } from "../../api/getPopularMovies";
 import { getTopRatedMovies } from "../../api/getTopRatedMovies";
 import { getUpcomingMovies } from "../../api/getUpcomingMovies";
+import Seo from "../../components/common/Seo";
 
 function HomePage() {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
@@ -59,6 +60,7 @@ function HomePage() {
 
   return (
     <Container>
+      <Seo title="Home" />
       {isLoading ? (
         <Loader>Loading..</Loader>
       ) : (

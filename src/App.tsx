@@ -4,17 +4,20 @@ import Router from "./Router";
 import Globalstyle from "./styles/Globalstyle";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { HelmetProvider } from "react-helmet-async";
 
 const client = new QueryClient();
 
 function App() {
   return (
     <Container>
-      <QueryClientProvider client={client}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <Globalstyle />
-        <Router />
-      </QueryClientProvider>
+      <HelmetProvider>
+        <QueryClientProvider client={client}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <Globalstyle />
+          <Router />
+        </QueryClientProvider>
+      </HelmetProvider>
     </Container>
   );
 }

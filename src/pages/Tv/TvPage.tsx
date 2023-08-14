@@ -10,6 +10,7 @@ import MovieModal from "../../components/common/MovieModal";
 import { getOnTheAirTv } from "../../api/getOnTheAirTv";
 import { getPopularTv } from "../../api/getPopularTv";
 import { getTopRatedTv } from "../../api/getTopRatedTv";
+import Seo from "../../components/common/Seo";
 
 function TvPage() {
   const { data: airingData, isLoading } = useQuery<IGetTvResult>(
@@ -52,6 +53,7 @@ function TvPage() {
 
   return (
     <Container>
+      <Seo title="Tv Shows" />
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
