@@ -7,7 +7,7 @@ import Header from "./components/common/Header";
 
 function Router() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Header />
       <Routes>
         <Route path="/search" element={<SearchPage />}>
